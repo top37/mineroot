@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gm-apache-commons-cli/gm-apache-commons-cli.iml" filepath="$PROJECT_DIR$/gm-apache-commons-cli/gm-apache-commons-cli.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gm-spring-batch/gm-spring-batch.iml" filepath="$PROJECT_DIR$/gm-spring-batch/gm-spring-batch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gm-spring-mq-rpc/gm-spring-mq-rpc.iml" filepath="$PROJECT_DIR$/gm-spring-mq-rpc/gm-spring-mq-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmtest-dubbo/gmtest-dubbo.iml" filepath="$PROJECT_DIR$/gmtest-dubbo/gmtest-dubbo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmtest-jpa/gmtest-jpa.iml" filepath="$PROJECT_DIR$/gmtest-jpa/gmtest-jpa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmtest-mina/gmtest-mina.iml" filepath="$PROJECT_DIR$/gmtest-mina/gmtest-mina.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmtest-mq-rpc/gmtest-mq-rpc.iml" filepath="$PROJECT_DIR$/gmtest-mq-rpc/gmtest-mq-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmtest-quartz-timer/gmtest-quartz-timer.iml" filepath="$PROJECT_DIR$/gmtest-quartz-timer/gmtest-quartz-timer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmtest-timer/gmtest-timer.iml" filepath="$PROJECT_DIR$/gmtest-timer/gmtest-timer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mine-root.iml" filepath="$PROJECT_DIR$/mine-root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mytest-all-rabbitmq/mytest-all-rabbitmq.iml" filepath="$PROJECT_DIR$/mytest-all-rabbitmq/mytest-all-rabbitmq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mytest-spark/mytest-spark.iml" filepath="$PROJECT_DIR$/mytest-spark/mytest-spark.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mytest-spring-batch/mytest-spring-batch.iml" filepath="$PROJECT_DIR$/mytest-spring-batch/mytest-spring-batch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mytest-spring-rpc/mytest-spring-rpc.iml" filepath="$PROJECT_DIR$/mytest-spring-rpc/mytest-spring-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mytest-spring-sysprop/mytest-spring-sysprop.iml" filepath="$PROJECT_DIR$/mytest-spring-sysprop/mytest-spring-sysprop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mytest-robot/mytestrobot.iml" filepath="$PROJECT_DIR$/mytest-robot/mytestrobot.iml" />
+    </modules>
+  </component>
+</project>

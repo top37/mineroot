@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gm-apache-commons-cli" />
+        <module name="gm-spring-batch" />
+        <module name="gm-spring-mq-rpc" />
+        <module name="gmtest-dubbo" />
+        <module name="gmtest-jpa" />
+        <module name="gmtest-mina" />
+        <module name="gmtest-mq-rpc" />
+        <module name="gmtest-quartz-timer" />
+        <module name="gmtest-timer" />
+        <module name="mytest-all-rabbitmq" />
+        <module name="mytest-spark" />
+        <module name="mytest-spring-batch" />
+        <module name="mytest-spring-rpc" />
+        <module name="mytest-spring-sysprop" />
+        <module name="mytestrobot" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="7">
+      <module name="gm-apache-commons-cli" target="1.7" />
+      <module name="gm-spring-batch" target="1.7" />
+      <module name="gm-spring-mq-rpc" target="1.7" />
+      <module name="gmtest-dubbo" target="1.7" />
+      <module name="gmtest-jpa" target="1.7" />
+      <module name="gmtest-mina" target="1.7" />
+      <module name="gmtest-mq-rpc" target="1.7" />
+      <module name="gmtest-quartz-timer" target="1.7" />
+      <module name="gmtest-timer" target="1.7" />
+      <module name="mine-root" target="1.7" />
+      <module name="mytest-all-rabbitmq" target="1.7" />
+      <module name="mytest-spark" target="1.7" />
+      <module name="mytest-spring-batch" target="1.7" />
+      <module name="mytest-spring-rpc" target="1.7" />
+      <module name="mytest-spring-sysprop" target="1.7" />
+      <module name="mytestrobot" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

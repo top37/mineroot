@@ -1,0 +1,50 @@
+demo&demo1:
+1.同一条TCP连接(Connection)可以创建多条信道(Channel)；
+2.同一条信道(Channel)可以声明多个队列(queue)
+3.auto-delete属性的含义：当最后一个Consumer取消订阅该queue时，该queue自动被删除；若不被消费，此队列会一直存在的；
+  注意：所有Consumer取消订阅（断开连接） !=  没有Consumer订阅（连接），不要混淆概念。
+  queue一旦生成了，那么掌握它的人就是rabbitmq server了。
+demo2:
+1.确定持久化信息磁盘所在位置
+2.对于本版本而言，存在queue文件夹。
+3.durable=true - 数据量小的话，存入queue文件夹下，大则存入msg_store_persistent文件夹下(*.rdb,16M)；
+4.durable=false - 内存不足的情况下也会通过写入磁盘来缓解压力，写入msg_store_transient文件夹下(*.rdb,16M)。
+疑问：即使消息被消费掉，仍然会有1-2个文件，并且会随着服务重启清空。
+猜测：因为垃圾回收规则决定（合并式）。
+
+疑问：每个Channel是否只允许使用一种exchange？
+猜测：否，可以多个路由规则； --  猜测正确，同一信道可以有多个exchange，见demo4；
+
+demo3：
+只对消息感兴趣，至于是哪个队列发来的，who care？ fresh+empty+random ->Temporary queue
+发布订阅模式，以consumer为主的pull（拉取）的模式 -- producer不再提供具名queue，而是想要得到消息的consumer自己提供Temporary queues；
+着重点不在queue上，而在exchange上。
+一旦producer选择exchange.type=fanout，那么便无需创建queue；
+Consumer若想要订阅消息，需要两步：
+①指定exchange-fanout(具名）
+②创建Temporary queues(Features:fresh+empty+random+auto-delete+exclusive)
+
+
+
+这个博主我很看好哟：
+http://www.cnblogs.com/gordonkong/p/6939043.html
+durable：队列本身是否需要持久化。如果为 false，则 RabbitMQ 重启后该 Queue 消失。
+exclusive：排他性队列确保该队列只对申明它的连接可见，注意是连接而不是 Channel。当相应连接关闭时，该队列自动删除。
+autoDelete：设置为 true 的队列会在所有 Consumer 都断开连接时自动删除（不管是否是 durable）。队列被第一个 Consumer 连接前不会被删除。
+
+basicAck 方法的第二个参数 multiple 取值为 false 时，表示通知 RabbitMQ 当前消息被确认；
+如果为 true，则额外将比第一个参数指定的 delivery tag 小的消息一并确认。 - 批量确认针对的是整个信道 - demo5 - TestBatchAckInOneChannel.java
+类中的着重点：
+①consumerChannel1.basicQos(8);->最多累积8条消息。
+②consumerChannel1.basicAck(envelope.getDeliveryTag(), true);->批量确认
+③注意：同一Channel
+
+
+Consumer Acknowledgements and Publisher Confirms and message persistence 保证消息don't lost
+qos ack confirm(本质也是ack)都是Channel的属性。
+
+
+
+
+error：
+* : Unsupported major.minor version 52.0   --  升级jdk版本至1.8

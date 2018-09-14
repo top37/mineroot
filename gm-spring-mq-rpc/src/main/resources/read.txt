@@ -1,0 +1,17 @@
+最近在看RabbitMQ，以为项目中用到了mq+rpc，所以打算研究一下；
+但是，看的过程中，总会联想到一些东西，来了灵感，所以就记录下来：
+就说同步思维吧，我们发送请求：eg - 订餐，完毕的同时，当然不会处于一直等待的状态，发送完毕之后，我们还会去做其他的事情，比如说看小说之类的。
+去吃午餐会有两种场景：
+1.付钱，等待取饭 - 要求打饭的效率极高(都是做的现成的) - 美食城
+2.付钱，拿到订单号，去做其他事情顺便等待被叫好（现做，或者人手不够用）- 呷哺呷哺
+方法1一旦反应慢了就会流失客户（损失）；
+方法2会更好的留住客户。方法2也是比较典型的异步的思维。
+
+rpc与普通的用过即忘模式的区别：rabbit-rpc.jpg
+rpc需要接收返回数据 - 1.client需要有唯一标识 -> new AMQP.BasicProperties.correlationId(corrId).replyTo(replyQueueName)
+											2.回调 -> replyQueueName = channel.queueDeclare().getQueue();
+										  3.总的来说，就是RPCClient中含有producer和consumer，RPCServer中也含有producer和consumer；
+详细的说说3：
+RPCClient中的producer中含有consumer的回调（官网用的是阻塞：即收不到消息即阻塞）；RPCServer的consumer消费的同时会创造一个producer,只需correlationId；而双方都是通过1.BasicProperties来进行标识的
+客户端需要配置的是AmqpProxyFactoryBean（接口代理）：AmqpTemplate(含connection) & RoutingKey(queueName) & ServiceInterface；
+服务端需要配置的是listener-container：queue（含queueName)+service（interfaceImpl）&serviceInterface & AmqpTemplate(含connection)

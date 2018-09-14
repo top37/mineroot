@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans default-lazy-init="false"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- 占位符 -->
+	<bean id="env" class="demo.EnvironmentFactoryBean">
+		<!--启动时增加JVM系统变量env.files属性，实际上是个路径，理解为软连接-->
+		<!--#中的systemProperties或者其他，实质上是个bean，通过可以通过getBean取出来-->
+		<property name="locations" value="#{systemProperties['env.files']}" />
+		<!--<list>-->
+			<!--<value>classpath:/dev/*.properties</value>-->
+		<!--</list>-->
+		<!--</property>-->
+		<!--<property name="locations" value="#{systemProperties['env.files']}"/>-->
+	</bean>
+	<context:component-scan base-package="demo" />
+</beans>

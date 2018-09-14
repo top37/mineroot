@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+	
+	<!-- 客户端  -->
+	<!-- <bean id="httpClient" class="com.sunline.nfs.http.socket.HttpClient" /> -->
+	
+	<!-- 占位符 -->
+	<bean id="env" class="demo.support.EnvironmentFactoryBean">
+		<property name="locations" value="#{systemProperties['env.files'] ?: 'classpath:/dev/*.properties'}"/>
+	</bean>
+	
+	<!-- 服务端配置 -->
+	<bean class="demo.http.socket.HttpServer" init-method="bind" destroy-method="unbind">
+		<property name="acceptor" ref="icAcceptor" />
+		<property name="port" value="#{env.port}"/>
+	</bean>
+	
+	<bean id="icAcceptor" factory-bean="icAcceptorHelper" factory-method="getAcceptor">
+		<!-- IO处理句柄 -->
+		<property name="handler">
+			<bean class="demo.http.socket.SocketServerHandler" />
+		</property>
+	</bean>
+	
+	<bean factory-bean="icAcceptor" factory-method="getSessionConfig">
+		<!-- socket连接超过#{env.idleTime}后认为连接闲置 -->
+		<property name="bothIdleTime" value="#{env.serverIdleTime}" />
+	</bean>
+	<bean id="icAcceptorHelper" class="demo.http.common.NioAcceptorHelper">
+		<!-- socket处理过滤器列表，依据从上到下的顺序 -->
+		<property name="ioFilters">
+			<list>
+				<!-- 日志过滤器 -->
+				<bean class="org.apache.mina.filter.logging.LoggingFilter">
+					<constructor-arg value="demo.http.socket.HttpServer" />
+				</bean>
+				<!-- 协议编解码过滤器 -->
+				<bean class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+					<constructor-arg>
+                        <bean class="demo.http.socket.HttpServerProtocolCodecFactory"/>
+					</constructor-arg>
+				</bean>
+				<bean class="org.apache.mina.filter.executor.ExecutorFilter">
+					<constructor-arg value="#{env['executorFilterMaxPoolSize'] ?: 100}" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>
+

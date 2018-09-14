@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+          http://www.springframework.org/schema/context    
+          http://www.springframework.org/schema/context/spring-context-4.2.xsd
+          ">
+
+    <bean id="serviceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">  
+        <property name="serviceName" value="myCalcService" />  
+        <property name="service" ref="calcService" />  
+        <property name="serviceInterface" value="demo.server.CalcService" />
+        <property name="registryPort" value="8080" />
+        <property name="servicePort" value="8088" />
+    </bean>  
+
+    <bean id="calcService" class="demo.server.CalcServiceImpl" />
+
+</beans>

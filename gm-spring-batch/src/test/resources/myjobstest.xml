@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans default-lazy-init="false" xmlns:p="http://www.springframework.org/schema/p" xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util" xmlns:jee="http://www.springframework.org/schema/jee"  xmlns:batch="http://www.springframework.org/schema/batch"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<context:component-scan base-package="demo" />
+	<bean class="org.springframework.batch.test.JobLauncherTestUtils"/>
+	<import resource="steps/beforeTruncate.xml" />
+	<import resource="batch-context.xml" />
+
+	<!-- 批量步骤模版，目前用于定义一组listener -->
+	<batch:step id="stepTemplate" abstract="true">
+		<batch:listeners>
+			<batch:listener ref="myBatchStatusListener" />
+			<batch:listener>
+				<bean class="demo.listener.DebugSupportListener" />
+			</batch:listener>
+		</batch:listeners>
+	</batch:step>
+
+	<!-- 用于支持并发批量的线程池 -->
+	<task:executor id="asyncTaskExecutor" pool-size="32" />
+
+
+	<batch:job id="ccsJob">
+		<!--<batch:listeners>-->
+			<!--<batch:listener ref="myBatchStatusListener" />-->
+			<!--<batch:listener ref="jobExecuteConfListener" />-->
+		<!--</batch:listeners>-->
+		<!--<batch:validator>-->
+			<!--<bean class="com.sunline.acm.service.sdk.BatchDateJobParametersValidator" />-->
+		<!--</batch:validator>-->
+
+		<!-- 批前临时表清理 -->
+		<batch:step parent="stepTemplate" id="before-clean-table" next="test">
+			<batch:tasklet ref="beforeTruncate" />
+		</batch:step>
+
+		<batch:step parent="stepTemplate" id="test" next="cc1345">
+			<batch:tasklet ref="beforeTruncateTest" />
+		</batch:step>
+
+		<!-- 美意房：还款匹配-生成订单、入账流水 -->
+		<!--<batch:step parent="stepTemplate" id="cc1345" >-->
+			<!--<batch:tasklet>-->
+				<!--<batch:chunk reader="r1345" processor="p1345" writer="w1345" commit-interval="#{env['commitInterval'] ?: 100}" />-->
+			<!--</batch:tasklet>-->
+		<!--</batch:step>-->
+
+	</batch:job>
+</beans>
